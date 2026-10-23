@@ -1,0 +1,8 @@
+pytest
+httpx
+pyyaml
+boto3
+pandas
+pyarrow
+numpy
+playwright

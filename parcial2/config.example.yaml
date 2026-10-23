@@ -1,0 +1,20 @@
+# Copy to config.yaml and fill it in. Do NOT commit credentials; the harness uses your normal
+# AWS credentials (environment variables / ~/.aws), exactly like the AWS CLI.
+team_id: "team01"
+seed: 12345              # the seed assigned to your team (changes your dataset AND the expected answers)
+
+backend:
+  base_url: "http://YOUR-EC2-IP:8000"
+frontend:
+  base_url: "http://YOUR-EC2-IP:3000"
+
+aws:
+  region: us-east-1
+  athena_workgroup: primary
+  athena_database: airline_analytics
+  athena_output: "s3://YOUR-BUCKET/athena-results/"   # needed only if your workgroup has no default
+  tables:
+    detail: reservations_curated        # Parquet, partitioned by month (string)
+    metrics: route_month_metrics
+
+cost_projection_file: cost_projection.yaml   # your monthly cost projection (see contract/COST_PROJECTION.md)

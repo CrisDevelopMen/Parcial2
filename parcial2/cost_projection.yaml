@@ -1,0 +1,12 @@
+assumptions: >
+  Aerolínea regional: ~500 usuarios/día, ~5 000 búsquedas y ~300 reservas/día en el backend;
+  ~200 consultas/día del panel gerencial contra Athena. Dataset histórico de 2M de reservas
+  (~80 MB CSV crudo, ~25 MB Parquet curado). Un batch EMR al mes (3 x m4.large, <1 h).
+  RDS y EC2 encendidos 24x7 (730 h/mes), single-AZ, sin NAT ni balanceador.
+line_items:
+  - {service: "RDS", detail: "PostgreSQL db.t3.micro, 20 GB gp2, single-AZ, 730 h x 0.017", monthly_usd: 12.41}
+  - {service: "EC2", detail: "t3.small backend FastAPI + frontend estático, 730 h x 0.0208", monthly_usd: 15.18}
+  - {service: "EMR", detail: "1-2 corridas/mes, 3 x m4.large (12 h normalizadas c/u) x 0.03", monthly_usd: 0.72}
+  - {service: "S3", detail: "~0.2 GB (crudo + Parquet + resultados Athena + logs EMR)", monthly_usd: 0.05}
+  - {service: "Athena", detail: "~6 000 consultas/mes sobre métricas (KB c/u) + análisis ad hoc, <10 GB escaneados", monthly_usd: 0.05}
+  - {service: "Glue", detail: "Data Catalog: 2 tablas (<1M objetos, capa gratuita)", monthly_usd: 0.0}

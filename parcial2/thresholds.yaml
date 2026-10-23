@@ -1,0 +1,54 @@
+# TEACHER-CONTROLLED. Students should not edit this file; the teacher re-runs a sample with
+# his own copy. Values marked VERIFY depend on what the AWS Academy Learner Lab allows.
+
+dataset_rows: 2000000
+
+# TEACHER-ONLY SECRET. Added to the team seed to choose the (route, month) probes of R7 and R9, so the
+# values checked in the final run cannot be precomputed from the harness the students received.
+# Leave 0 in the copy given to students; set any integer in YOUR copy before the final run.
+probe_salt: 0
+
+backend:
+  concurrency_requests: 50      # simultaneous POST /reservations per round (R2)
+  concurrency_rounds: 5         # rounds; a race is probabilistic, so we repeat
+  search_concurrency: 20        # R1
+  search_requests: 100
+  search_p95_seconds: 1.0
+
+analytics:
+  tolerance_rel: 0.001          # 0.1 %  (R6, R7, R9)
+  endpoint_max_seconds: 10      # R7
+  endpoint_probes: 5
+  expected_partitions: 24       # R5
+  max_scan_vs_one_partition: 2.0   # R6: bytes scanned <= 2.0 x average partition size
+  emr_window_skew_seconds: 120  # R4: parquet LastModified must fall inside a COMPLETED EMR run
+  emr_window_fraction: 0.9
+
+cost:
+  max_emr_normalized_instance_hours: 150    # R10  (m4.large = 4 normalized h per instance-hour; ~US$4-5)
+  allowed_rds_classes: [db.t3.micro, db.t3.small, db.t4g.micro, db.t4g.small]
+  allowed_ec2_types: [t3.micro, t3.small, t3.medium, t4g.micro, t4g.small]
+  allowed_emr_instance_types: [m4.large]   # the only EMR type allowed in the Learner Lab
+  forbid_multi_az: true                     # R11
+  forbid_nat_gateway: true
+  warn_load_balancer: true                  # an ALB is ~US$16/month: warn, do not fail
+  max_distinct_billable_services: 8
+  budget_usd: 50.0                          # R12: hard ceiling (Learner Lab budget); projected AND live-estimated cost must be below it
+  reference_monthly_usd: 60.0               # TEACHER: set after building the reference solution
+  max_ratio_vs_reference: 1.5               # R12
+  declared_vs_computed_tolerance: 0.25      # R12: declared projection vs. cost computed from live resources
+
+# Points of the automated part (70 %). The remaining 30 % is AI-assisted review + oral defence.
+weights:
+  R1: 4
+  R2: 10
+  R3: 3
+  R4: 8
+  R5: 6
+  R6: 8
+  R7: 8
+  R8: 6
+  R9: 4
+  R10: 5
+  R11: 4
+  R12: 4

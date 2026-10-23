@@ -1,0 +1,30 @@
+# config.yaml — equipo semilla 77. Campos FILL_AFTER_DEPLOY se completan tras desplegar en AWS.
+# NO poner credenciales aquí: el harness usa las credenciales normales (env / ~/.aws).
+team_id: "team77"
+seed: 77
+dataset_rows: 20000      # informativo: el harness lee dataset_rows desde thresholds.yaml
+
+backend:
+  base_url: "http://54.209.205.114:8000"
+frontend:
+  base_url: "http://54.209.205.114:8000"
+
+aws:
+  region: us-east-1
+  athena_workgroup: primary
+  athena_database: airline_analytics
+  athena_output: "s3://airline-team77-390016655463/athena-results/"
+  tables:
+    detail: reservations_curated        # Parquet, particionada por month (string)
+    metrics: route_month_metrics
+
+cost_projection_file: cost_projection.yaml
+
+# Referencia del dataset (no lo lee el harness; documentación para el equipo)
+dataset_info:
+  routes: [CUC-PSO, PEI-LET, LET-BGA, BOG-BGA, BAQ-BGA, PEI-BOG, LET-BOG, LET-ADZ, PEI-ADZ, ADZ-CTG, PEI-CTG, MDE-BAQ]
+  capacity: 180
+  small_k: 5
+  load_factor: 0.84
+  cancel_rate: 0.09
+  months: "2023-01..2024-12"   # 24 particiones

@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "team_id": "team77",
+    "seed": 77
+  },
+  "generated_at": "2026-10-22 03:04:57",
+  "points": 27.0,
+  "max_points": 70.0,
+  "requirements": [
+    {
+      "id": "R1",
+      "title": "Flight search latency",
+      "weight": 4,
+      "points": 4.0,
+      "status": "passed",
+      "tests": [
+        {
+          "name": "test_search_p95",
+          "outcome": "passed",
+          "detail": ""
+        }
+      ],
+      "evidence": [
+        "100 requests, concurrency 20: p50=0.067s p95=0.382s"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "R2",
+      "title": "No overselling under concurrency",
+      "weight": 10,
+      "points": 10.0,
+      "status": "passed",
+      "tests": [
+        {
+          "name": "test_last_seat_exactly_one",
+          "outcome": "passed",
+          "detail": ""
+        },
+        {
+          "name": "test_k_seats_exactly_k",
+          "outcome": "passed",
+          "detail": ""
+        }
+      ],
+      "evidence": [
+        "round 1: 201=1 409=49 other=0",
+        "round 2: 201=1 409=49 other=0",
+        "round 3: 201=1 409=49 other=0",
+        "round 4: 201=1 409=49 other=0",
+        "round 5: 201=1 409=49 other=0",
+        "K=5 round 1: 201=5",
+        "K=5 round 2: 201=5",
+        "K=5 round 3: 201=5",
+        "K=5 round 4: 201=5",
+        "K=5 round 5: 201=5"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "R3",
+      "title": "Reservation retrieval",
+      "weight": 3,
+      "points": 3.0,
+      "status": "passed",
+      "tests": [
+        {
+          "name": "test_get_reservation",
+          "outcome": "passed",
+          "detail": ""
+        },
+        {
+          "name": "test_unknown_reservation_404",
+          "outcome": "passed",
+          "detail": ""
+        }
+      ],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R4",
+      "title": "EMR job produces curated Parquet",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R5",
+      "title": "Glue Catalog tables per contract",
+      "weight": 6,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R6",
+      "title": "Athena correctness and partition pruning",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R7",
+      "title": "Analytics endpoint backed by Athena",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R8",
+      "title": "Customer flow in browser",
+      "weight": 6,
+      "points": 6.0,
+      "status": "passed",
+      "tests": [
+        {
+          "name": "test_search_reserve_confirm",
+          "outcome": "passed",
+          "detail": ""
+        }
+      ],
+      "evidence": [
+        "UI created reservation ebe2ef02dc204491b0384572ebf918c7 for a flight; backend returns it"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "R9",
+      "title": "Manager panel matches endpoint",
+      "weight": 4,
+      "points": 4.0,
+      "status": "passed",
+      "tests": [
+        {
+          "name": "test_manager_panel_equals_endpoint",
+          "outcome": "passed",
+          "detail": ""
+        }
+      ],
+      "evidence": [
+        "BOG-BGA 2024-06: panel=0.8221 endpoint=0.8221 truth=0.8221"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "R10",
+      "title": "No leftover EMR / bounded EMR hours",
+      "weight": 5,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R11",
+      "title": "Simple low-cost architecture",
+      "weight": 4,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R12",
+      "title": "Cost projection",
+      "weight": 4,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    }
+  ]
+}

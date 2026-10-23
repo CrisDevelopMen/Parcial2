@@ -1,0 +1,22 @@
+# ILLUSTRATIVE on-demand prices (us-east-1, USD). They come from my general knowledge and are
+# NOT verified against the live AWS price list. TEACHER: check them with the AWS Pricing
+# Calculator before using this file to grade anything.
+hours_per_month: 730
+
+rds_per_hour:
+  db.t3.micro: 0.017
+  db.t3.small: 0.034
+  db.t4g.micro: 0.016
+  db.t4g.small: 0.032
+ec2_per_hour:
+  t3.micro: 0.0104
+  t3.small: 0.0208
+  t3.medium: 0.0416
+  t4g.micro: 0.0084
+  t4g.small: 0.0168
+nat_gateway_per_hour: 0.045
+load_balancer_per_hour: 0.0225
+emr_per_normalized_instance_hour: 0.03     # EC2 + EMR surcharge, approximated for m5-class
+athena_per_tb_scanned: 5.0
+s3_per_gb_month: 0.023
+default_unknown_instance_per_hour: 0.10
