@@ -7,7 +7,7 @@ dataset_rows: 20000      # informativo: el harness lee dataset_rows desde thresh
 backend:
   base_url: "http://FILL_AFTER_DEPLOY_EC2_IP:8000"
 frontend:
-  base_url: "http://FILL_AFTER_DEPLOY_EC2_IP:3000"
+  base_url: "http://FILL_AFTER_DEPLOY_EC2_IP:8000"
 
 aws:
   region: us-east-1
