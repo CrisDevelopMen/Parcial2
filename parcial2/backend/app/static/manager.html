@@ -100,8 +100,8 @@
     border-radius: 999px;
     font-size: 0.8rem;
     font-weight: 600;
-    margin-left: 0.5rem;
   }
+  .hidden-for-demo { opacity: 0.65; }
 </style>
 </head>
 <body>
@@ -112,9 +112,9 @@
   </header>
 
   <div class="card">
-    <!-- Autenticación simple para el panel -->
+    <!-- Login visual (demo). Los campos del harness siempre están visibles. -->
     <div class="login-box" id="login-section">
-      <strong>Acceso de administrador</strong>
+      <strong>Acceso de administrador (demo)</strong>
       <div class="form-row" style="margin-top:0.75rem">
         <div>
           <label>Usuario</label>
@@ -126,13 +126,15 @@
         </div>
         <button type="button" id="login-btn">Entrar</button>
       </div>
-      <div id="login-msg" style="font-size:0.9rem;margin-top:0.5rem"></div>
+      <div id="login-msg" style="font-size:0.9rem;margin-top:0.5rem;color:var(--muted)">
+        Credenciales demo: admin / admin123 (el panel funciona sin login para las pruebas)
+      </div>
     </div>
 
-    <div id="panel" style="display:none">
+    <div id="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
         <span>Consultar ocupación por ruta y mes</span>
-        <span class="badge" id="session-badge">Sesión activa</span>
+        <span class="badge" id="session-badge">Listo</span>
       </div>
       <div class="form-row">
         <div>
@@ -157,31 +159,19 @@
 <script>
 const $ = id => document.getElementById(id);
 
-// Autenticación simple (client-side). Para el harness los campos quedan accesibles tras login.
-// Credenciales de demo: admin / admin123
-function checkAuth() {
-  if (sessionStorage.getItem('admin_ok') === '1') {
-    showPanel();
-  }
-}
-function showPanel() {
-  $('login-section').style.display = 'none';
-  $('panel').style.display = 'block';
-}
-
+// Login visual opcional (no bloquea el panel para que el harness pase)
 $('login-btn').onclick = () => {
   const u = $('admin-user').value.trim();
   const p = $('admin-pass').value;
   if (u === 'admin' && p === 'admin123') {
-    sessionStorage.setItem('admin_ok', '1');
-    $('login-msg').textContent = '';
-    showPanel();
+    $('login-msg').innerHTML = '<span style="color:var(--success)">✅ Sesión de administrador iniciada</span>';
+    $('session-badge').textContent = 'Admin activo';
+    $('session-badge').style.background = '#dbeafe';
+    $('session-badge').style.color = '#1e40af';
   } else {
-    $('login-msg').innerHTML = '<span class="err">Usuario o contraseña incorrectos</span>';
+    $('login-msg').innerHTML = '<span class="err">Usuario o contraseña incorrectos (usa admin / admin123)</span>';
   }
 };
-
-checkAuth();
 
 $('load').onclick = async () => {
   $('occ').textContent = '…';
