@@ -1,50 +1,226 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><title>Reservas de vuelos</title>
-<style>body{font-family:sans-serif;max-width:760px;margin:2em auto}input,button{padding:6px;margin:3px}
-table{border-collapse:collapse;width:100%;margin-top:1em}td,th{border:1px solid #ccc;padding:6px}
-#booking{margin-top:1em;padding:1em;background:#f4f4f4;display:none}.err{color:#b00}</style></head>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reservas de Vuelos — Aerolínea</title>
+<style>
+  :root {
+    --primary: #0a2540;
+    --accent: #0070f3;
+    --bg: #f7f9fc;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --success: #10b981;
+    --error: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: linear-gradient(135deg, #f7f9fc 0%, #e0e7ff 100%);
+    color: var(--text);
+    margin: 0;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  h1 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin: 0;
+  }
+  a.nav {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  a.nav:hover { background: #f0f7ff; }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .search-form {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: end;
+  }
+  input, select, button {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: white;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,112,243,0.1);
+  }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  button:hover { background: #0051cc; transform: translateY(-1px); }
+  button:active { transform: translateY(0); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  th, td {
+    padding: 0.9rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  th { color: var(--muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+  tr:hover { background: #fafbff; }
+  #booking {
+    display: none;
+    background: #f0f7ff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+  }
+  .err { color: var(--error); font-weight: 500; }
+  .success { color: var(--success); }
+  .price { font-weight: 600; color: var(--primary); }
+</style>
+</head>
 <body>
-<h1>Buscar vuelos</h1> <a href="/manager">Panel gerencial</a>
-<form id="search-form">
-  <input data-testid="search-origin" id="origin" placeholder="Origen (CUC)" required>
-  <input data-testid="search-destination" id="destination" placeholder="Destino (PSO)" required>
-  <input data-testid="search-date" id="date" type="date" required>
-  <button data-testid="search-submit" type="submit">Buscar</button>
-</form>
-<div id="msg" class="err"></div>
-<table><thead><tr><th>Vuelo</th><th>Ruta</th><th>Fecha</th><th>Asientos</th><th>Precio</th><th></th></tr></thead>
-<tbody id="results"></tbody></table>
-<div id="booking">
-  <div>Reservando vuelo <b id="sel-flight"></b></div>
-  <input data-testid="passenger-name" id="passenger" placeholder="Nombre del pasajero">
-  <select id="fare"><option>ECONOMY</option><option>BUSINESS</option></select>
-  <button data-testid="confirm-submit" id="confirm">Confirmar</button>
+<div class="container">
+  <header>
+    <h1>✈️ Reservas de Vuelos</h1>
+    <a class="nav" href="/manager">Panel Gerencial →</a>
+  </header>
+
+  <div class="card">
+    <form id="search-form" class="search-form">
+      <div>
+        <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:4px">Origen</label>
+        <input data-testid="search-origin" id="origin" placeholder="CUC" required maxlength="3">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:4px">Destino</label>
+        <input data-testid="search-destination" id="destination" placeholder="PSO" required maxlength="3">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:4px">Fecha</label>
+        <input data-testid="search-date" id="date" type="date" required>
+      </div>
+      <button data-testid="search-submit" type="submit">Buscar vuelos</button>
+    </form>
+    <div id="msg" class="err" style="margin-top:0.75rem"></div>
+  </div>
+
+  <div class="card" id="results-card" style="display:none">
+    <h2 style="margin-top:0;font-size:1.2rem">Vuelos disponibles</h2>
+    <table>
+      <thead>
+        <tr><th>Vuelo</th><th>Ruta</th><th>Fecha</th><th>Asientos</th><th>Precio</th><th></th></tr>
+      </thead>
+      <tbody id="results"></tbody>
+    </table>
+
+    <div id="booking">
+      <strong>Reservando vuelo <span id="sel-flight"></span></strong>
+      <div style="display:flex;gap:0.75rem;margin-top:0.75rem;flex-wrap:wrap;align-items:end">
+        <div>
+          <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:4px">Nombre del pasajero</label>
+          <input data-testid="passenger-name" id="passenger" placeholder="Tu nombre completo">
+        </div>
+        <div>
+          <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:4px">Clase</label>
+          <select id="fare"><option>ECONOMY</option><option>BUSINESS</option></select>
+        </div>
+        <button data-testid="confirm-submit" id="confirm">Confirmar reserva</button>
+      </div>
+    </div>
+    <div id="confirmation" style="margin-top:1rem"></div>
+  </div>
 </div>
-<div id="confirmation" style="margin-top:1em"></div>
+
 <script>
 const $ = id => document.getElementById(id);
 let selected = null;
+
 $('search-form').onsubmit = async e => {
-  e.preventDefault(); $('msg').textContent = ''; $('results').innerHTML = '';
-  const q = new URLSearchParams({origin: $('origin').value.trim(), destination: $('destination').value.trim(), date: $('date').value});
+  e.preventDefault();
+  $('msg').textContent = '';
+  $('results').innerHTML = '';
+  $('results-card').style.display = 'none';
+  const q = new URLSearchParams({
+    origin: $('origin').value.trim().toUpperCase(),
+    destination: $('destination').value.trim().toUpperCase(),
+    date: $('date').value
+  });
   const r = await fetch('/flights/search?' + q);
-  if (!r.ok) { $('msg').textContent = 'Error ' + r.status; return; }
+  if (!r.ok) { $('msg').textContent = 'Error al buscar (' + r.status + ')'; return; }
   const list = await r.json();
-  if (!list.length) $('msg').textContent = 'Sin vuelos disponibles';
+  if (!list.length) {
+    $('msg').textContent = 'No hay vuelos disponibles para esa ruta y fecha.';
+    return;
+  }
+  $('results-card').style.display = 'block';
   for (const f of list) {
-    const tr = document.createElement('tr'); tr.dataset.testid = 'flight-row';
-    tr.innerHTML = `<td>${f.flight_id}</td><td>${f.route}</td><td>${f.flight_date}</td><td>${f.seats_available}</td>` +
-      `<td>$${(f.price_cents/100).toFixed(2)}</td><td><button data-testid="reserve-button">Reservar</button></td>`;
-    tr.querySelector('button').onclick = () => { selected = f.flight_id; $('sel-flight').textContent = f.flight_id; $('booking').style.display = 'block'; };
+    const tr = document.createElement('tr');
+    tr.dataset.testid = 'flight-row';
+    tr.innerHTML = `
+      <td><strong>${f.flight_id}</strong></td>
+      <td>${f.route}</td>
+      <td>${f.flight_date}</td>
+      <td>${f.seats_available}</td>
+      <td class="price">$${(f.price_cents/100).toFixed(2)}</td>
+      <td><button data-testid="reserve-button" type="button">Reservar</button></td>`;
+    tr.querySelector('button').onclick = () => {
+      selected = f.flight_id;
+      $('sel-flight').textContent = f.flight_id;
+      $('booking').style.display = 'block';
+      $('booking').scrollIntoView({behavior: 'smooth'});
+    };
     $('results').appendChild(tr);
   }
 };
+
 $('confirm').onclick = async () => {
-  const r = await fetch('/reservations', {method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({flight_id: selected, passenger_name: $('passenger').value.trim(), fare_class: $('fare').value})});
-  if (r.status !== 201) { $('confirmation').innerHTML = `<span class="err">No se pudo reservar (${r.status})</span>`; return; }
+  if (!selected) return;
+  const r = await fetch('/reservations', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      flight_id: selected,
+      passenger_name: $('passenger').value.trim(),
+      fare_class: $('fare').value
+    })
+  });
+  if (r.status !== 201) {
+    $('confirmation').innerHTML = `<span class="err">No se pudo reservar (${r.status})</span>`;
+    return;
+  }
   const b = await r.json();
-  $('confirmation').innerHTML = 'Reserva confirmada: <b data-testid="confirmation-id"></b>';
-  $('confirmation').querySelector('b').textContent = b.reservation_id;
+  $('confirmation').innerHTML = `<span class="success">✅ Reserva confirmada: <b data-testid="confirmation-id">${b.reservation_id}</b></span>`;
 };
-</script></body></html>
+</script>
+</body>
+</html>

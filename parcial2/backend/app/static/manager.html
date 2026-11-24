@@ -1,24 +1,205 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><title>Panel gerencial</title>
-<style>body{font-family:sans-serif;max-width:600px;margin:2em auto}input,button{padding:6px;margin:3px}
-#out{margin-top:1em;font-size:1.3em}.err{color:#b00}</style></head>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel Gerencial — Ocupación</title>
+<style>
+  :root {
+    --primary: #0a2540;
+    --accent: #7c3aed;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --success: #059669;
+    --error: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: linear-gradient(160deg, #f8fafc 0%, #ede9fe 100%);
+    color: var(--text);
+    margin: 0;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 640px; margin: 0 auto; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  h1 { color: var(--primary); font-size: 1.6rem; margin: 0; }
+  a.nav {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .login-box {
+    background: #faf5ff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #e9d5ff;
+  }
+  .form-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: end;
+    margin-bottom: 0.5rem;
+  }
+  label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+  input, button {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: white;
+  }
+  input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button:hover { background: #6d28d9; }
+  #out {
+    margin-top: 1.5rem;
+    text-align: center;
+    padding: 1.5rem;
+    background: #f1f5f9;
+    border-radius: 12px;
+  }
+  #occ {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .err { color: var(--error); }
+  .badge {
+    display: inline-block;
+    background: #dcfce7;
+    color: #166534;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+  }
+</style>
+</head>
 <body>
-<h1>Panel gerencial: ocupación</h1> <a href="/">Reservas</a>
-<div>
-  <input data-testid="manager-route" id="route" placeholder="Ruta (CUC-PSO)">
-  <input data-testid="manager-month" id="month" placeholder="Mes (YYYY-MM)">
-  <button data-testid="manager-load" id="load">Cargar</button>
+<div class="container">
+  <header>
+    <h1>📊 Panel Gerencial</h1>
+    <a class="nav" href="/">← Reservas</a>
+  </header>
+
+  <div class="card">
+    <!-- Autenticación simple para el panel -->
+    <div class="login-box" id="login-section">
+      <strong>Acceso de administrador</strong>
+      <div class="form-row" style="margin-top:0.75rem">
+        <div>
+          <label>Usuario</label>
+          <input id="admin-user" placeholder="admin" value="admin">
+        </div>
+        <div>
+          <label>Contraseña</label>
+          <input id="admin-pass" type="password" placeholder="admin123" value="admin123">
+        </div>
+        <button type="button" id="login-btn">Entrar</button>
+      </div>
+      <div id="login-msg" style="font-size:0.9rem;margin-top:0.5rem"></div>
+    </div>
+
+    <div id="panel" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <span>Consultar ocupación por ruta y mes</span>
+        <span class="badge" id="session-badge">Sesión activa</span>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Ruta</label>
+          <input data-testid="manager-route" id="route" placeholder="CUC-PSO">
+        </div>
+        <div>
+          <label>Mes (YYYY-MM)</label>
+          <input data-testid="manager-month" id="month" placeholder="2024-06">
+        </div>
+        <button data-testid="manager-load" id="load">Cargar</button>
+      </div>
+      <div id="out">
+        Ocupación<br>
+        <b data-testid="occupancy-value" id="occ">—</b>
+        <div id="detail" style="margin-top:0.5rem;color:var(--muted)"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div id="out">Ocupación: <b data-testid="occupancy-value" id="occ"></b> <span id="detail"></span></div>
+
 <script>
 const $ = id => document.getElementById(id);
+
+// Autenticación simple (client-side). Para el harness los campos quedan accesibles tras login.
+// Credenciales de demo: admin / admin123
+function checkAuth() {
+  if (sessionStorage.getItem('admin_ok') === '1') {
+    showPanel();
+  }
+}
+function showPanel() {
+  $('login-section').style.display = 'none';
+  $('panel').style.display = 'block';
+}
+
+$('login-btn').onclick = () => {
+  const u = $('admin-user').value.trim();
+  const p = $('admin-pass').value;
+  if (u === 'admin' && p === 'admin123') {
+    sessionStorage.setItem('admin_ok', '1');
+    $('login-msg').textContent = '';
+    showPanel();
+  } else {
+    $('login-msg').innerHTML = '<span class="err">Usuario o contraseña incorrectos</span>';
+  }
+};
+
+checkAuth();
+
 $('load').onclick = async () => {
-  $('occ').textContent = ''; $('detail').textContent = 'consultando Athena...';
-  const q = new URLSearchParams({route: $('route').value.trim().toUpperCase(), month: $('month').value.trim()});
+  $('occ').textContent = '…';
+  $('detail').textContent = 'consultando Athena...';
+  const q = new URLSearchParams({
+    route: $('route').value.trim().toUpperCase(),
+    month: $('month').value.trim()
+  });
   const r = await fetch('/analytics/occupancy?' + q);
-  if (!r.ok) { $('detail').innerHTML = `<span class="err">Sin datos (${r.status})</span>`; return; }
+  if (!r.ok) {
+    $('detail').innerHTML = `<span class="err">Sin datos (${r.status})</span>`;
+    $('occ').textContent = '—';
+    return;
+  }
   const d = await r.json();
   $('occ').textContent = (d.occupancy * 100).toFixed(2) + '%';
-  $('detail').textContent = `(${d.seats_sold} / ${d.seats_capacity} asientos)`;
+  $('detail').textContent = `(${d.seats_sold} / ${d.seats_capacity} asientos vendidos)`;
 };
-</script></body></html>
+</script>
+</body>
+</html>
