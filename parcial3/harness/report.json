@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "team_id": null,
+    "seed": null
+  },
+  "generated_at": "2026-11-11 19:32:52",
+  "points": 0.0,
+  "max_points": 70.0,
+  "requirements": [
+    {
+      "id": "R1",
+      "title": "Every API action emits one valid event",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R2",
+      "title": "No event loss under burst, API stays fast",
+      "weight": 6,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R3",
+      "title": "Live view fed by the stream (event time)",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R4",
+      "title": "Events reach the S3 landing zone",
+      "weight": 4,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R5",
+      "title": "Star schema tables per contract",
+      "weight": 6,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R6",
+      "title": "Star integrity (keys, orphans, duplicates)",
+      "weight": 6,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R7",
+      "title": "Business queries return the right numbers",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R8",
+      "title": "Dirty events handled, refresh in time",
+      "weight": 6,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R9",
+      "title": "Slowly changing dimension (type 2)",
+      "weight": 8,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R10",
+      "title": "Partition pruning and scan limit",
+      "weight": 4,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R11",
+      "title": "Minimal Kinesis stream",
+      "weight": 4,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    },
+    {
+      "id": "R12",
+      "title": "Cost projection",
+      "weight": 2,
+      "points": 0.0,
+      "status": "not_verified",
+      "tests": [],
+      "evidence": [],
+      "warnings": []
+    }
+  ]
+}

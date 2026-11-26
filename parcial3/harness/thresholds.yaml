@@ -1,0 +1,50 @@
+# TEACHER-CONTROLLED. Students should not edit this file; the teacher runs his own copy.
+# VERIFY = depends on what the AWS Academy Learner Lab allows.
+
+# TEACHER-ONLY SECRET: added to the team seed to choose the replay/probe values of the live checks.
+# Leave 0 in the copy given to students; set any integer in YOUR copy before the final run.
+probe_salt: 0
+
+stream:
+  burst_requests: 200            # R2
+  burst_concurrency: 50
+  burst_p95_seconds: 1.0
+  emit_wait_seconds: 15          # R1: events must be readable within this time
+  emit_samples: 30
+  live_window_minutes: 5         # R3
+  live_visible_seconds: 10
+  live_settle_seconds: 15        # R3: wait after the replay before checking the live view
+  delivery_max_seconds: 300      # R4: replay events must be in the S3 landing zone
+  delivery_poll_seconds: 15
+  replay_events: 20000
+  refresh_max_seconds: 900       # R8: POST /admin/refresh-star must finish
+  refresh_poll_seconds: 10
+
+star:
+  tolerance_rel: 0.001
+  max_scan_ratio_one_month: 0.6  # R10: bytes scanned for one month / for all months
+  max_workgroup_cutoff_bytes: 1000000000   # R10: per-query data limit configured in the workgroup (<= 1 GB)
+
+cost:
+  max_stream_shards: 1           # R11
+  require_provisioned: true
+  max_retention_hours: 24
+  budget_usd: 50.0               # R12 hard ceiling (Learner Lab)
+  reference_monthly_usd: 60.0    # TEACHER: set after building the reference solution
+  max_ratio_vs_reference: 1.5
+  declared_vs_computed_tolerance: 0.25
+
+# Points of the automated part (70 %).
+weights:
+  R1: 7
+  R2: 6
+  R3: 7
+  R4: 4
+  R5: 7
+  R6: 5
+  R7: 11
+  R8: 6
+  R9: 8
+  R10: 4
+  R11: 3
+  R12: 2

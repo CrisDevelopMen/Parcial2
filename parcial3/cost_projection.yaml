@@ -1,0 +1,6 @@
+assumptions: "búsquedas por día, reservas por día, horas que existe el stream (solo durante pruebas)"
+line_items:
+- {service: "Kinesis", detail: "1 shard aprovisionado, solo durante las pruebas (~24h)", monthly_usd: 3.0}
+- {service: "S3", detail: "landing zone + Parquet star schema (bajo volumen de pruebas)", monthly_usd: 1.0}
+- {service: "Athena", detail: "consultas del panel y del harness, límite 1GB/workgroup", monthly_usd: 0.5}
+- {service: "Lambda", detail: "refresh-star job (opcional, bajo uso)", monthly_usd: 0.5}
